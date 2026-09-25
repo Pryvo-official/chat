@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pryvo — 404 not found</title>
+  <!-- favicon -->
+  <link rel="icon" type="image/png" href="https://github.com/Pryvo-official/Pryvo/blob/main/P-pryvo.png?raw=true">
+  <!-- modern, clean sans-serif with a touch of character -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    /* reset & base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #000000;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.4;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #000000;
+    }
+
+    /* main container – full viewport */
+    .landing {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: #000000;
+    }
+
+    /* ---- interactive grid squares (ripple) ---- */
+    .grid-squares {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+      grid-auto-rows: 38px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+    }
+
+    .grid-squares .cell {
+      background: rgba(255, 255, 255, 0.03);
+      border-right: 1px solid rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      transition: background-color 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                  box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      will-change: background-color, box-shadow;
+      pointer-events: auto;
+      cursor: default;
+    }
+
+    /* smooth fill to white on hover */
+    .grid-squares .cell:hover {
+      background-color: #ffffff;
+      box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5);
+      transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out;
+    }
+
+    /* ---- thin circular ring wave animation ---- */
+    @keyframes ringPulse {
+      0% {
+        background-color: rgba(255, 255, 255, 0.03);
+        box-shadow: inset 0 0 0 rgba(255, 255, 255, 0);
+        border-color: rgba(255, 255, 255, 0.02);
+      }
+      15% {
+        background-color: rgba(255, 255, 255, 0.15);
+        box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.4),
+                    0 0 4px rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.6);
+      }
+      35% {
+        background-color: rgba(255, 255, 255, 0.05);
+        box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.1),
+                    0 0 1px rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.15);
+      }
+      100% {
+        background-color: rgba(255, 255, 255, 0.03);
+        box-shadow: inset 0 0 0 rgba(255, 255, 255, 0);
+        border-color: rgba(255, 255, 255, 0.02);
+      }
+    }
+
+    .grid-squares .cell.wave {
+      animation: ringPulse 1.8s ease-out forwards;
+    }
+
+    /* soft monochrome orbs */
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .glow-1 {
+      width: 360px;
+      height: 360px;
+      background: #ffffff;
+      top: -100px;
+      right: -70px;
+    }
+
+    .glow-2 {
+      width: 320px;
+      height: 320px;
+      background: #cccccc;
+      bottom: -80px;
+      left: -50px;
+    }
+
+    .glow-3 {
+      width: 220px;
+      height: 220px;
+      background: #999999;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.1;
+      filter: blur(100px);
+    }
+
+    /* brand logo — larger, fixed top-left */
+    .brand-logo {
+      position: absolute;
+      top: 0;
+      left: 1.5rem;
+      z-index: 10;
+      height: clamp(5rem, 12vw, 8rem);
+      width: auto;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      will-change: transform;
+      user-select: none;
+      filter: brightness(1) contrast(1);
+      opacity: 0.95;
+      pointer-events: auto;
+    }
+
+    .brand-logo:hover {
+      transform: scale(1.03);
+      opacity: 1;
+    }
+
+    /* 404 content — compact */
+    .error-content {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 520px;
+      width: 100%;
+      animation: fadeIn 0.7s ease-out;
+      pointer-events: none;
+    }
+
+    .error-content > * {
+      pointer-events: auto;
+    }
+
+    .error-code {
+      font-size: clamp(4.5rem, 16vw, 8rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      color: #ffffff;
+      text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+      margin-bottom: 0.25rem;
+      user-select: none;
+    }
+
+    .error-divider {
+      width: 48px;
+      height: 1.5px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      margin: 0.9rem 0 1.1rem 0;
+    }
+
+    .error-title {
+      font-size: clamp(1rem, 3vw, 1.35rem);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: #f0f0f0;
+      margin-bottom: 0.5rem;
+    }
+
+    .error-message {
+      font-size: clamp(0.85rem, 2vw, 0.95rem);
+      font-weight: 300;
+      color: #a0a0a0;
+      max-width: 380px;
+      margin-bottom: 1.75rem;
+      line-height: 1.55;
+    }
+
+    /* return button */
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.6rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 40px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-home:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-home:active {
+      transform: translateY(0px);
+      box-shadow: 0 4px 12px -6px rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-home svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-home:hover svg {
+      transform: translateX(-3px);
+    }
+
+    /* redirect note */
+    .redirect-note {
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: #555;
+      letter-spacing: 0.02em;
+      transition: opacity 0.3s ease, color 0.3s ease;
+      min-height: 1.1rem;
+    }
+
+    .redirect-note span {
+      color: #888;
+      font-weight: 400;
+    }
+
+    .redirect-note.paused {
+      color: #666;
+    }
+
+    .redirect-note.paused span {
+      color: #999;
+    }
+
+    /* progress bar */
+    .progress-track {
+      margin-top: 1.25rem;
+      width: 120px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: opacity 0.4s ease;
+    }
+
+    .progress-track.hidden {
+      opacity: 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.35);
+      border-radius: 2px;
+      transform-origin: left;
+      transform: scaleX(1);
+      transition: transform 1s linear;
+    }
+
+    /* fade-in animation */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 480px) {
+      .landing {
+        padding: 1.25rem 1rem;
+      }
+      .brand-logo {
+        top: 0;
+        left: 1rem;
+        height: 4rem;
+      }
+      .grid-squares {
+        grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+        grid-auto-rows: 32px;
+      }
+      .error-code {
+        font-size: clamp(4rem, 20vw, 6rem);
+      }
+      .btn-home {
+        padding: 0.6rem 1.4rem;
+        font-size: 0.8rem;
+      }
+      .error-message {
+        margin-bottom: 1.5rem;
+        max-width: 320px;
+      }
+      .error-divider {
+        margin: 0.75rem 0 1rem 0;
+        width: 40px;
+      }
+      .redirect-note {
+        margin-top: 1.25rem;
+        font-size: 0.7rem;
+      }
+      .progress-track {
+        width: 100px;
+        margin-top: 1rem;
+      }
+    }
+
+    /* high-contrast focus */
+    .btn-home:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.7);
+      outline-offset: 4px;
+    }
+
+    ::selection {
+      background: #ffffff;
+      color: #000000;
+    }
+  </style>
+</head>
+<body>
+  <main class="landing">
+    <!-- interactive grid squares (ripple) -->
+    <div class="grid-squares" id="gridSquares"></div>
+
+    <!-- ambient monochrome glows -->
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+
+    <!-- brand logo pinned top-left (image) -->
+    <img 
+      src="https://raw.githubusercontent.com/Pryvo-official/Pryvo/main/Pryvo_Logo.png" 
+      alt="pryvo" 
+      class="brand-logo"
+    >
+
+    <!-- 404 content -->
+    <div class="error-content">
+      <div class="error-code">404</div>
+      <div class="error-divider"></div>
+      <h1 class="error-title">page not found</h1>
+      <p class="error-message">
+        The page you’re looking for doesn’t exist or has been moved.
+      </p>
+      <a href="https://pryvo.uk" class="btn-home" aria-label="Go back to homepage">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        back to home
+      </a>
+      <div class="progress-track" id="progressTrack">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="redirect-note" id="redirectNote">
+        redirecting to <span>pryvo.uk</span> in <span id="countdown">5</span>s
+      </div>
+    </div>
+  </main>
+
+  <script>
+    /* ---------- Redirect logic with pause on mouse move ---------- */
+    (function() {
+      var redirectUrl = 'https://pryvo.uk';
+      var redirectDelay = 5000; // 5 seconds
+      var countdownEl = document.getElementById('countdown');
+      var redirectNote = document.getElementById('redirectNote');
+      var progressTrack = document.getElementById('progressTrack');
+      var progressFill = document.getElementById('progressFill');
+
+      var redirectTimer = null;
+      var countdownInterval = null;
+      var seconds = 5;
+      var isPaused = false;
+      var hasInteracted = false;
+
+      function startRedirect() {
+        if (hasInteracted) return;
+
+        seconds = 5;
+        isPaused = false;
+        redirectNote.classList.remove('paused');
+        redirectNote.innerHTML = 'redirecting to <span>pryvo.uk</span> in <span id="countdown">5</span>s';
+        countdownEl = document.getElementById('countdown');
+        progressTrack.classList.remove('hidden');
+
+        progressFill.style.transition = 'none';
+        progressFill.style.transform = 'scaleX(1)';
+
+        void progressFill.offsetWidth;
+        progressFill.style.transition = 'transform ' + (redirectDelay / 1000) + 's linear';
+        progressFill.style.transform = 'scaleX(0)';
+
+        countdownInterval = setInterval(function() {
+          if (isPaused) return;
+          seconds--;
+          if (countdownEl) {
+            countdownEl.textContent = Math.max(0, seconds);
+          }
+          if (seconds <= 0) {
+            clearInterval(countdownInterval);
+          }
+        }, 1000);
+
+        redirectTimer = setTimeout(function() {
+          if (!isPaused && !hasInteracted) {
+            window.location.href = redirectUrl;
+          }
+        }, redirectDelay);
+      }
+
+      function pauseRedirect() {
+        if (hasInteracted || isPaused) return;
+        isPaused = true;
+
+        if (redirectTimer) {
+          clearTimeout(redirectTimer);
+          redirectTimer = null;
+        }
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
+
+        var computedStyle = window.getComputedStyle(progressFill);
+        var currentTransform = computedStyle.transform;
+        progressFill.style.transition = 'none';
+        progressFill.style.transform = currentTransform;
+
+        redirectNote.classList.add('paused');
+        redirectNote.innerHTML = 'redirect paused — <span>click "back to home" to continue</span>';
+
+        progressTrack.classList.add('hidden');
+      }
+
+      function handleMouseMove() {
+        if (!hasInteracted) {
+          hasInteracted = true;
+          pauseRedirect();
+          document.removeEventListener('mousemove', handleMouseMove);
+          document.removeEventListener('touchstart', handleTouchStart);
+        }
+      }
+
+      function handleTouchStart() {
+        if (!hasInteracted) {
+          hasInteracted = true;
+          pauseRedirect();
+          document.removeEventListener('mousemove', handleMouseMove);
+          document.removeEventListener('touchstart', handleTouchStart);
+        }
+      }
+
+      startRedirect();
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('touchstart', handleTouchStart);
+    })();
+
+    /* ---------- Interactive grid ripple effect ---------- */
+    (function() {
+      const grid = document.getElementById('gridSquares');
+      if (!grid) return;
+
+      const CELL_COUNT = 900;
+      const cells = [];
+      let waveInterval = null;
+      let hoverTimer = null;
+      let currentHoveredCell = null;
+
+      // Create cells
+      for (let i = 0; i < CELL_COUNT; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.index = i;
+        grid.appendChild(cell);
+        cells.push(cell);
+      }
+
+      // Get grid dimensions dynamically
+      function getGridDimensions() {
+        const style = window.getComputedStyle(grid);
+        const cols = style.gridTemplateColumns.split(' ').length;
+        const rows = Math.ceil(cells.length / cols);
+        return { cols, rows };
+      }
+
+      // Trigger circular ring wave from a specific cell
+      function triggerCircularWave(originCell) {
+        cells.forEach(c => {
+          c.classList.remove('wave');
+          c.style.animationDelay = '';
+        });
+
+        void grid.offsetWidth;
+
+        const originIndex = parseInt(originCell.dataset.index);
+        const { cols, rows } = getGridDimensions();
+
+        const originRow = Math.floor(originIndex / cols);
+        const originCol = originIndex % cols;
+
+        cells.forEach((cell, index) => {
+          const row = Math.floor(index / cols);
+          const col = index % cols;
+
+          const dist = Math.sqrt(
+            Math.pow(row - originRow, 2) + Math.pow(col - originCol, 2)
+          );
+
+          const delay = dist * 0.06;
+
+          cell.style.animationDelay = `${delay}s`;
+          cell.classList.add('wave');
+        });
+
+        const maxDist = Math.sqrt(Math.pow(rows, 2) + Math.pow(cols, 2));
+        const cleanupTime = (maxDist * 0.06 + 1.8) * 1000;
+
+        setTimeout(() => {
+          cells.forEach(c => {
+            c.classList.remove('wave');
+            c.style.animationDelay = '';
+          });
+        }, cleanupTime);
+      }
+
+      // Hover timer logic
+      function startHoverTimer(cell) {
+        if (hoverTimer) {
+          clearTimeout(hoverTimer);
+        }
+        if (waveInterval) {
+          clearInterval(waveInterval);
+          waveInterval = null;
+        }
+
+        currentHoveredCell = cell;
+        hoverTimer = setTimeout(() => {
+          if (currentHoveredCell === cell) {
+            triggerCircularWave(cell);
+
+            waveInterval = setInterval(() => {
+              if (currentHoveredCell === cell) {
+                triggerCircularWave(cell);
+              } else {
+                clearInterval(waveInterval);
+                waveInterval = null;
+              }
+            }, 10000);
+          }
+        }, 10000);
+      }
+
+      function stopHoverTimer() {
+        if (hoverTimer) {
+          clearTimeout(hoverTimer);
+          hoverTimer = null;
+        }
+        if (waveInterval) {
+          clearInterval(waveInterval);
+          waveInterval = null;
+        }
+        currentHoveredCell = null;
+      }
+
+      cells.forEach(cell => {
+        cell.addEventListener('mouseenter', () => {
+          startHoverTimer(cell);
+        });
+
+        cell.addEventListener('mouseleave', () => {
+          if (currentHoveredCell === cell) {
+            stopHoverTimer();
+          }
+        });
+      });
+
+      grid.addEventListener('mouseleave', () => {
+        stopHoverTimer();
+      });
+    })();
+  </script>
+</body>
+</html>
