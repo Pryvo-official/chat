@@ -141,24 +141,36 @@
       filter: blur(100px);
     }
 
-    /* brand logo */
-    .brand-logo {
+    /* brand logo — now clickable and wrapped in anchor */
+    .brand-logo-link {
       position: absolute;
       top: 0;
       left: 2rem;
       z-index: 10;
-      height: clamp(4rem, 10vw, 7rem);
-      width: auto;
+      display: inline-block;
+      line-height: 0;
       transition: transform 0.2s ease, opacity 0.2s ease;
       will-change: transform;
       user-select: none;
-      filter: brightness(1) contrast(1);
-      opacity: 0.95;
-      pointer-events: auto;
+      text-decoration: none;
+      cursor: pointer;
     }
 
-    .brand-logo:hover {
+    .brand-logo-link:hover {
       transform: scale(1.03);
+      opacity: 1;
+    }
+
+    .brand-logo {
+      height: clamp(4rem, 10vw, 7rem);
+      width: auto;
+      filter: brightness(1) contrast(1);
+      opacity: 0.95;
+      pointer-events: none;
+      display: block;
+    }
+
+    .brand-logo-link:hover .brand-logo {
       opacity: 1;
     }
 
@@ -543,9 +555,11 @@
       .landing {
         padding: 1.5rem 1rem;
       }
-      .brand-logo {
+      .brand-logo-link {
         top: 0;
         left: 1rem;
+      }
+      .brand-logo {
         height: 3rem;
       }
       .grid-squares {
@@ -671,12 +685,19 @@
     <div class="glow glow-2"></div>
     <div class="glow glow-3"></div>
 
-    <!-- brand logo pinned top-left -->
-    <img 
-      src="https://raw.githubusercontent.com/Pryvo-official/Pryvo/main/Pryvo_Logo.png" 
-      alt="pryvo" 
-      class="brand-logo"
+    <!-- brand logo pinned top-left — clickable to pryvo.uk -->
+    <a 
+      href="https://pryvo.uk" 
+      class="brand-logo-link" 
+      aria-label="pryvo homepage"
+      title="pryvo.uk"
     >
+      <img 
+        src="https://raw.githubusercontent.com/Pryvo-official/Pryvo/main/Pryvo_Logo.png" 
+        alt="pryvo" 
+        class="brand-logo"
+      >
+    </a>
 
     <!-- CONTENT ROW: login card + image box -->
     <div class="content-row">
