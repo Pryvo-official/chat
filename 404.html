@@ -145,7 +145,7 @@
       filter: blur(100px);
     }
 
-    /* brand logo — larger, fixed top-left */
+    /* brand logo — larger, fixed top-left, now clickable */
     .brand-logo {
       position: absolute;
       top: 0;
@@ -159,6 +159,7 @@
       filter: brightness(1) contrast(1);
       opacity: 0.95;
       pointer-events: auto;
+      cursor: pointer; /* indicates clickability */
     }
 
     .brand-logo:hover {
@@ -390,11 +391,12 @@
     <div class="glow glow-2"></div>
     <div class="glow glow-3"></div>
 
-    <!-- brand logo pinned top-left (image) -->
+    <!-- brand logo pinned top-left (image) — now clickable to pryvo.uk -->
     <img 
       src="https://raw.githubusercontent.com/Pryvo-official/Pryvo/main/Pryvo_Logo.png" 
       alt="pryvo" 
       class="brand-logo"
+      id="brandLogo"
     >
 
     <!-- 404 content -->
@@ -641,6 +643,28 @@
       grid.addEventListener('mouseleave', () => {
         stopHoverTimer();
       });
+    })();
+
+    /* ---------- Make brand logo clickable to pryvo.uk ---------- */
+    (function() {
+      const logo = document.getElementById('brandLogo');
+      if (logo) {
+        logo.addEventListener('click', function(e) {
+          e.preventDefault(); // prevent any default if it were a link
+          window.location.href = 'https://pryvo.uk';
+        });
+        // ensure it behaves like a link
+        logo.style.cursor = 'pointer';
+        // add keyboard accessibility
+        logo.setAttribute('role', 'link');
+        logo.setAttribute('tabindex', '0');
+        logo.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            window.location.href = 'https://pryvo.uk';
+          }
+        });
+      }
     })();
   </script>
 </body>
